@@ -3,10 +3,11 @@
 #include "BasicElement.h"
 #include "Snake.h"
 class Game : public GameScreen {
-	COORD direction;
-	Snake* snake;
-	BasicElement* food;
+	COORD m_direction;
+	Snake* m_snake;
+	BasicElement* m_food;
 	int SpeedCount, Speed;
+	bool m_bool_increase;
 public:
 	Game();
 	virtual ~Game();
