@@ -7,7 +7,6 @@ class Game : public GameScreen {
 	Snake* m_snake;
 	BasicElement* m_food;
 	int SpeedCount, Speed;
-	bool m_bool_increase;
 public:
 	Game();
 	virtual ~Game();

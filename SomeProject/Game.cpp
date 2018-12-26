@@ -3,15 +3,14 @@
 #include <time.h>
 #include <iostream>
 
-Game::Game() 
+Game::Game()
 {
 	glLineWidth(1);
 	srand((unsigned int)time(0));
-	m_snake = new Snake();
-	m_food = new BasicElement({5, 5}, { 0.0, 0.5, 0.0 });
-	Speed = 5;
-	m_bool_increase = false;
+	this->m_snake = new Snake();
+	this->m_food = new BasicElement({5, 5}, { 0.0, 0.9, 0.0 });
 	m_direction = { 1, 0 };
+	Speed = 5;
 }
 
 Game::~Game() 
@@ -30,8 +29,7 @@ void Game::Update()
 		m_snake->Drawm_snake();
 	}*/
 	if (EatFood(&m_snake->GetHeadCoord(), &m_food->m_elem_coord)) {
-		m_bool_increase = true;
-		m_snake->IncreaseSnake();
+		m_snake->IncreaseSnake(m_snake->m_tail_previous_coord);
 		if (m_snake->GetSnakeSize() == 400) 
 		{
 			std::cout << "You win!" << std::endl;
@@ -42,10 +40,11 @@ void Game::Update()
 	}
 	if (m_snake->Intersect(m_snake->head()->m_elem_coord, 1)) {
 		m_snake->Reset();
+		m_food->m_elem_coord = GenerateFood();
 		m_direction = { 1, 0 };
 	}
-	if (m_food) m_food->DrawElem();
-	m_snake->DrawSnake(&m_bool_increase);
+	m_food->DrawElem();
+	m_snake->DrawSnake();
 	DrawNet();
 }
 

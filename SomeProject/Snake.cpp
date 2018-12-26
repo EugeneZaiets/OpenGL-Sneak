@@ -3,7 +3,6 @@
 
 Snake::Snake()
 {
-	eaten = false;
 	this->Reset();
 }
 Snake::~Snake()
@@ -16,6 +15,7 @@ Snake::~Snake()
 
 void Snake::MoveSnake(COORD* direction)
 {
+	m_tail_previous_coord = body[0]->m_elem_coord;
 
 	for (int i = 1; i < body.size(); i++)
 	{
@@ -52,22 +52,10 @@ void Snake::Reset()
 		body.insert(body.begin(), new BasicElement({ i * -1, 0 }));
 	}
 }
+
 void Snake::DrawSnake()
 {
 	for (auto element : body) element->DrawElem();
-}
-void Snake::DrawSnake(bool temp)
-{
-	int i = 0;
-	if (temp)
-	{
-		i = 1;
-		temp = false;
-	}
-	for (; i < body.size(); i++)
-	{
-		body[i]->DrawElem();
-	}
 }
 
 BasicElement* Snake::head()
@@ -82,6 +70,7 @@ COORD Snake::GetHeadCoord()
 	  head()->m_elem_coord.Y };
 	return head_coord;
 }
+
 COORD Snake::GetTailCoord()
 {
 	COORD tail_coord =
@@ -89,12 +78,14 @@ COORD Snake::GetTailCoord()
 		body[0]->m_elem_coord.Y };
 	return tail_coord;
 }
+
 int Snake::GetSnakeSize()
 {
 	return body.size();
 }
-void Snake::IncreaseSnake() {
-	body.insert(body.begin(), new BasicElement(body[0]->m_elem_coord));
+
+void Snake::IncreaseSnake(COORD coord) {
+	body.insert(body.begin(), new BasicElement(coord));
 }
 
 bool Snake::Intersect(COORD coord, int offset) {
