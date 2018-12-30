@@ -10,7 +10,8 @@ Game::Game()
 	this->m_snake = new Snake();
 	this->m_food = new BasicElement({5, 5}, { 0.0, 0.9, 0.0 });
 	m_direction = { 1, 0 };
-	Speed = 5;
+	SpeedCount = 0;
+	Speed = 40;
 }
 
 Game::~Game() 
@@ -23,11 +24,7 @@ void Game::Update()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	/*++SpeedCount;
-	if (SpeedCount == Speed) {
-		m_snake->Movem_snake(&m_direction);
-		m_snake->Drawm_snake();
-	}*/
+	
 	if (EatFood(&m_snake->GetHeadCoord(), &m_food->m_elem_coord)) {
 		m_snake->IncreaseSnake(m_snake->m_tail_previous_coord);
 		if (m_snake->GetSnakeSize() == 400) 
@@ -43,6 +40,14 @@ void Game::Update()
 		m_food->m_elem_coord = GenerateFood();
 		m_direction = { 1, 0 };
 	}
+	
+	++SpeedCount;
+	if (SpeedCount == Speed) {
+		SpeedCount = 0;
+		m_snake->MoveSnake(&m_direction);
+		Sleep(5);
+	}
+
 	m_food->DrawElem();
 	m_snake->DrawSnake();
 	DrawNet();
@@ -54,30 +59,34 @@ void Game::Keyboard(
 	int action,
 	int mods)
 {
-	if (key == GLFW_KEY_ESCAPE && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+	if (key == GLFW_KEY_ESCAPE && (action == GLFW_PRESS  /*|| action == GLFW_REPEAT*/)) {
 		glfwTerminate();
 		system("pause");
 		exit(0);
 	}
-	else if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+	else if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS /*|| action == GLFW_REPEAT*/)) {
 		if (m_direction.X == 1) return;
 		else m_direction = { -1, 0 };
 		m_snake->MoveSnake(&m_direction);
+		Sleep(20);
 	}
-	else if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+	else if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS  /*|| action == GLFW_REPEAT*/)) {
 		if (m_direction.X == -1) return;
 		else m_direction = { 1, 0 };
 		m_snake->MoveSnake(&m_direction);
+		Sleep(20);
 	}
-	else if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+	else if (key == GLFW_KEY_UP && (action == GLFW_PRESS /*|| action == GLFW_REPEAT*/)) {
 		if (m_direction.Y == -1) return;
 		else m_direction = { 0, 1 };
 		m_snake->MoveSnake(&m_direction);
+		Sleep(20);
 	}
-	else if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+	else if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS /*|| action == GLFW_REPEAT*/)) {
 		if (m_direction.Y == 1) return;
 		else m_direction = { 0, -1 };
 		m_snake->MoveSnake(&m_direction);
+		Sleep(20);
 	}
 }
 
